@@ -5,7 +5,7 @@ edition = "2024"
 description = "provides the libc types"
 license = "MIT"
 repository = "https://github.com/yfblock/libc-core"
-documentation = ""
+documentation = "https://yfblock.github.io/libc-core/libc_core/"
 
 
 [dependencies]
