@@ -1,0 +1,13 @@
+[package]
+name = "libc-core"
+version = "0.1.0"
+edition = "2024"
+description = "provides the libc types"
+license = "MIT"
+repository = "https://github.com/yfblock/libc-core"
+documentation = ""
+
+
+[dependencies]
+bitflags = "2.0.2"
+num_enum = { version = "0.7.3", default-features = false }
