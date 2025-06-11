@@ -50,7 +50,7 @@ pub struct UStack {
 }
 
 /// 文件的状态信息，类似于 Linux 中的 `stat` 结构体。
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 #[cfg_attr(
     feature = "zerocopy",
     derive(
