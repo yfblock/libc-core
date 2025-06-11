@@ -8,6 +8,15 @@ use crate::types::SigSet;
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/src/internal/ksigaction.h#L6>
 #[repr(C)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
 #[derive(Debug, Clone)]
 pub struct SigAction {
     /// 信号处理函数指针，类似于 C 中的 void (*sa_handler)(int);

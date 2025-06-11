@@ -5,7 +5,16 @@
 /// 系统信息结构体（对应 `struct utsname`），用于表示内核和主机相关信息
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/sys/utsname.h#L9>
-pub struct UTSname {
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+pub struct UTSName {
     /// 操作系统名称，例如 "Linux"
     pub sysname: [u8; 65],
     /// 主机名称，例如 "my-hostname"

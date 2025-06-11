@@ -49,10 +49,21 @@ pub struct UStack {
     pub size: usize,
 }
 
+/// 文件的状态信息，类似于 Linux 中的 `stat` 结构体。
+#[derive(Debug, Default, Clone)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+pub struct StatMode(u32);
+
 bitflags! {
-    /// 文件的状态信息，类似于 Linux 中的 `stat` 结构体。
-    #[derive(Debug, Default, PartialEq)]
-    pub struct StatMode: u32 {
+    impl StatMode: u32 {
         /// Null
         const NULL  = 0;
         /// Type
@@ -107,7 +118,16 @@ bitflags! {
 }
 
 #[repr(C)]
-#[derive(Debug, Default)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Debug, Default, Clone)]
 #[cfg(not(target_arch = "x86_64"))]
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/arch/aarch64/kstat.h#L1>
 /// 文件的状态信息，类似于 Linux 中的 `stat` 结构体。
@@ -145,7 +165,16 @@ pub struct Stat {
 }
 
 #[repr(C)]
-#[derive(Debug, Default)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Debug, Default, Clone)]
 #[cfg(target_arch = "x86_64")]
 /// 文件的状态信息，类似于 Linux 中的 `stat` 结构体。
 ///

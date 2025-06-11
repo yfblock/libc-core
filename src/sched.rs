@@ -7,7 +7,7 @@ bitflags! {
     ///
     /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/sched.h#L50>
     #[derive(Debug)]
-    pub struct CloneFlags: usize {
+    pub struct CloneFlags: u32 {
         /// 指定发送给子进程的信号（低 8 位），如 SIGCHLD
         const CSIGNAL                = 0x000000ff;
         /// 使用新的 time 命名空间（Linux 5.6+）
@@ -60,5 +60,21 @@ bitflags! {
         const CLONE_NEWNET           = 0x40000000;
         /// 启用 I/O 上下文的共享（Linux 2.6.25+）
         const CLONE_IO               = 0x80000000;
+    }
+
+    /// wait4 函数中使用的 option
+    ///
+    /// MUSL: <https://github.com/bminor/musl/blob/86373b4999bfd9a9379bc4a3ca877b1c80a2a340/include/sys/wait.h#L36-L42>
+    #[derive(Debug, Clone, Copy)]
+    pub struct WaitOption: u32 {
+        /// 如果没有子进程退出，wait4 立即返回 0，而不会阻塞等待。
+        const WHOHANG    =     1 << 0;
+        /// 让 wait4 也返回因 SIGSTOP (如 CTRL+Z) 暂停的子进程信息。
+        /// 默认情况下，wait4 只会返回已退出的子进程。
+        const WUNTRACED  =     1 << 1;
+        /// 返回已经被暂停后又通过 `SIGCONT` 恢复运行的子进程。
+        const WCONTINUED =     1 << 3;
+        /// 不清除子进程的终止状态，使其之后还能再次被 `wait` 系列函数查询。
+        const WNOWAIT    = 0x01000000;
     }
 }

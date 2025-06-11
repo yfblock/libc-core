@@ -11,6 +11,10 @@ use num_enum::TryFromPrimitive;
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/alltypes.h.in#L78>
 #[repr(C)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(zerocopy::FromBytes, zerocopy::Immutable, zerocopy::IntoBytes)
+)]
 #[derive(Clone)]
 pub struct IoVec {
     /// Base address of the buffer
@@ -23,6 +27,10 @@ pub struct IoVec {
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/alltypes.h.in#L43>
 #[repr(C)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(zerocopy::FromBytes, zerocopy::Immutable, zerocopy::IntoBytes)
+)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct TimeVal {
     /// seconds, range in 0~999999999
@@ -111,6 +119,15 @@ pub struct StatFS {
 }
 
 #[repr(C)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
 #[derive(Default, Clone, Copy, Debug)]
 /// 表示高精度时间的结构体（通常用于系统调用中的时间表示）
 ///
@@ -199,7 +216,16 @@ impl SigSetExtended {
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/alltypes.h.in>
 #[repr(C)]
-#[derive(Debug, Clone, Copy)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct SigSet(u64);
 
 impl SigSet {

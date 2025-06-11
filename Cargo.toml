@@ -7,7 +7,10 @@ license = "MIT"
 repository = "https://github.com/yfblock/libc-core"
 documentation = "https://yfblock.github.io/libc-core/libc_core/"
 
+[features]
+zerocopy = ["dep:zerocopy"]
 
 [dependencies]
-bitflags = "2.0.2"
+bitflags = "2.9.1"
 num_enum = { version = "0.7.3", default-features = false }
+zerocopy = { version = "0.8.20", features = ["derive"], optional = true }
