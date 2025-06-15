@@ -7,7 +7,16 @@ use crate::types::TimeVal;
 /// 资源限制结构体（对应 C 的 `struct rlimit`）
 /// 用于描述进程对某种资源的当前限制和最大限制
 #[repr(C)]
-#[derive(Debug, Clone)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Debug, Clone, Default)]
 pub struct Rlimit {
     /// 当前资源软限制（soft limit），即实际生效的限制值
     /// 进程可以在不超过 `max` 的情况下修改它

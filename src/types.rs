@@ -94,6 +94,11 @@ pub struct Dirent64 {
 }
 
 #[repr(C)]
+#[derive(Default, Clone)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(zerocopy::FromBytes, zerocopy::Immutable, zerocopy::IntoBytes)
+)]
 /// 文件系统状态结构体，用于 statfs 系统调用返回信息
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/arch/generic/bits/statfs.h#L4>
@@ -194,7 +199,16 @@ pub enum SigMaskHow {
 
 /// 信号处理掩码（sigset_t）
 #[repr(C)]
-#[derive(Debug, Clone)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Debug, Clone, Default)]
 pub struct SigSetExtended {
     /// 信号集，包含两个 64 位整数（128 位），用于存储信号的位掩码
     pub sigset: SigSet,

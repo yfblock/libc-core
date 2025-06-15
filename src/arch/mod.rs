@@ -19,10 +19,22 @@ pub use x86_64::{MContext, UContext};
 
 use crate::types::TimeSpec;
 
+#[repr(C)]
+#[derive(Debug, Clone)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+/// 信号处理栈的标志位，控制备用信号栈（alternate signal stack）的行为。
+pub struct SignalStackFlags(u32);
+
 bitflags! {
-    /// 信号处理栈的标志位，控制备用信号栈（alternate signal stack）的行为。
-    #[derive(Debug, Clone)]
-    pub struct SignalStackFlags: u32 {
+    impl SignalStackFlags: u32 {
         /// 当前正在备用信号栈上执行（内核设置此位，用户态只读）。
         const ONSTACK = 1;
         /// 禁用备用信号栈（不会在该栈上调用信号处理函数）。
@@ -36,6 +48,15 @@ bitflags! {
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/arch/x86_64/bits/signal.h#L91>
 #[repr(C)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
 #[derive(Debug, Clone)]
 pub struct UStack {
     /// 栈顶指针（备用信号栈的栈顶地址，通常是向下增长的内存区域）。
@@ -44,6 +65,7 @@ pub struct UStack {
     /// 标志位，表示备用栈的状态，比如是否启用、是否正在使用等。
     /// 对应 C 中的 int ss_flags;
     pub flags: SignalStackFlags,
+    _pad0: u32,
     /// 栈的大小（以字节为单位），表示备用信号栈的长度。
     /// 对应 C 中的 size_t ss_size;
     pub size: usize,
