@@ -2,12 +2,24 @@
 //!
 //! MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/poll.h>
 
+/// Poll 事件类型（类似于 epoll 的事件掩码）
+///
+/// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/poll.h#L12>
+#[repr(C)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct PollEvent(u16);
+
 bitflags! {
-    /// Poll 事件类型（类似于 epoll 的事件掩码）
-    ///
-    /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/poll.h#L12>
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct PollEvent: u16 {
+    impl PollEvent: u16 {
         /// 无事件（默认值）
         const NONE = 0;
         /// 有数据可读
@@ -43,7 +55,16 @@ bitflags! {
 }
 
 #[repr(C)]
-#[derive(Debug, Clone)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Debug, Clone, Default)]
 /// 用于 poll 系统调用的文件描述符结构体
 ///
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/poll.h#L31>
