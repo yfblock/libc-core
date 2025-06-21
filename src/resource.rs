@@ -30,6 +30,16 @@ pub struct Rlimit {
 /// 记录进程或线程的时间和资源消耗信息
 /// MUSL: <https://github.com/bminor/musl/blob/c47ad25ea3b484e10326f933e927c0bc8cded3da/include/sys/resource.h#L27>
 #[repr(C)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Clone, Default)]
 pub struct Rusage {
     /// 用户态运行时间（单位：秒 + 微秒）
     pub utime: TimeVal,
