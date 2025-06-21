@@ -6,7 +6,16 @@ use crate::types::TimeVal;
 
 /// 定时器结构体，表示间隔和当前值（对应 C 语言中的 `struct itimerval`）
 #[repr(C)]
-#[derive(Clone, Debug, Default, Copy)]
+#[cfg_attr(
+    feature = "zerocopy",
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
+)]
+#[derive(Clone, Debug, Default)]
 pub struct ITimerVal {
     /// 重复触发的间隔时间（interval > 0 表示周期性定时器）
     pub interval: TimeVal,

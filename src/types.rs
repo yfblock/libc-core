@@ -13,7 +13,12 @@ use num_enum::TryFromPrimitive;
 #[repr(C)]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy::FromBytes, zerocopy::Immutable, zerocopy::IntoBytes)
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
 )]
 #[derive(Clone)]
 pub struct IoVec {
@@ -29,7 +34,12 @@ pub struct IoVec {
 #[repr(C)]
 #[cfg_attr(
     feature = "zerocopy",
-    derive(zerocopy::FromBytes, zerocopy::Immutable, zerocopy::IntoBytes)
+    derive(
+        zerocopy::FromBytes,
+        zerocopy::Immutable,
+        zerocopy::IntoBytes,
+        zerocopy::KnownLayout
+    )
 )]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct TimeVal {
